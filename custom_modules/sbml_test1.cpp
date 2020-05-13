@@ -85,10 +85,10 @@ void create_cell_types( void )
 	// cell_defaults.functions.update_velocity = standard_update_cell_velocity;
 	cell_defaults.functions.volume_update_function = NULL;
 	cell_defaults.functions.update_velocity = NULL;
-	cell_defaults.functions.update_phenotype = 	energy_based_cell_phenotype; 
 
 	cell_defaults.functions.update_migration_bias = NULL; 
-	cell_defaults.functions.update_phenotype = NULL; // update_cell_and_death_parameters_O2_based; 
+	// cell_defaults.functions.update_phenotype = NULL; // update_cell_and_death_parameters_O2_based; 
+	cell_defaults.functions.update_phenotype = 	energy_based_cell_phenotype; 
 	cell_defaults.functions.custom_cell_rule = NULL; 
 	
 	cell_defaults.functions.add_cell_basement_membrane_interactions = NULL; 
