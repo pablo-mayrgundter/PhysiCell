@@ -120,6 +120,8 @@ class Cell_Definition
  public: 
 	int type; 
 	std::string name; 
+
+	std::string sbml_filename; 
  
 	Microenvironment* pMicroenvironment; 
 	
