@@ -80,5 +80,5 @@ void setup_tissue( void );
 std::vector<std::string> my_coloring_function( Cell* pCell );
 std::vector<std::string> energy_coloring_function( Cell* pCell );
 void energy_based_cell_phenotype( Cell* pCell, Phenotype& phenotype, double dt );
-void celltype1_rule( Cell* pCell, Phenotype& phenotype, double dt );
-void celltype2_rule( Cell* pCell, Phenotype& phenotype, double dt );
+// void celltype1_rule( Cell* pCell, Phenotype& phenotype, double dt );
+// void celltype2_rule( Cell* pCell, Phenotype& phenotype, double dt );

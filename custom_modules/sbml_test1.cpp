@@ -1,3 +1,69 @@
+/*
+###############################################################################
+# If you use PhysiCell in your project, please cite PhysiCell and the version #
+# number, such as below:                                                      #
+#                                                                             #
+# We implemented and solved the model using PhysiCell (Version x.y.z) [1].    #
+#                                                                             #
+# [1] A Ghaffarizadeh, R Heiland, SH Friedman, SM Mumenthaler, and P Macklin, #
+#     PhysiCell: an Open Source Physics-Based Cell Simulator for Multicellu-  #
+#     lar Systems, PLoS Comput. Biol. 14(2): e1005991, 2018                   #
+#     DOI: 10.1371/journal.pcbi.1005991                                       #
+#                                                                             #
+# See VERSION.txt or call get_PhysiCell_version() to get the current version  #
+#     x.y.z. Call display_citations() to get detailed information on all cite-#
+#     able software used in your PhysiCell application.                       #
+#                                                                             #
+# Because PhysiCell extensively uses BioFVM, we suggest you also cite BioFVM  #
+#     as below:                                                               #
+#                                                                             #
+# We implemented and solved the model using PhysiCell (Version x.y.z) [1],    #
+# with BioFVM [2] to solve the transport equations.                           #
+#                                                                             #
+# [1] A Ghaffarizadeh, R Heiland, SH Friedman, SM Mumenthaler, and P Macklin, #
+#     PhysiCell: an Open Source Physics-Based Cell Simulator for Multicellu-  #
+#     lar Systems, PLoS Comput. Biol. 14(2): e1005991, 2018                   #
+#     DOI: 10.1371/journal.pcbi.1005991                                       #
+#                                                                             #
+# [2] A Ghaffarizadeh, SH Friedman, and P Macklin, BioFVM: an efficient para- #
+#     llelized diffusive transport solver for 3-D biological simulations,     #
+#     Bioinformatics 32(8): 1256-8, 2016. DOI: 10.1093/bioinformatics/btv730  #
+#                                                                             #
+###############################################################################
+#                                                                             #
+# BSD 3-Clause License (see https://opensource.org/licenses/BSD-3-Clause)     #
+#                                                                             #
+# Copyright (c) 2015-2018, Paul Macklin and the PhysiCell Project             #
+# All rights reserved.                                                        #
+#                                                                             #
+# Redistribution and use in source and binary forms, with or without          #
+# modification, are permitted provided that the following conditions are met: #
+#                                                                             #
+# 1. Redistributions of source code must retain the above copyright notice,   #
+# this list of conditions and the following disclaimer.                       #
+#                                                                             #
+# 2. Redistributions in binary form must reproduce the above copyright        #
+# notice, this list of conditions and the following disclaimer in the         #
+# documentation and/or other materials provided with the distribution.        #
+#                                                                             #
+# 3. Neither the name of the copyright holder nor the names of its            #
+# contributors may be used to endorse or promote products derived from this   #
+# software without specific prior written permission.                         #
+#                                                                             #
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" #
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE   #
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE  #
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE   #
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR         #
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF        #
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS    #
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN     #
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)     #
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE  #
+# POSSIBILITY OF SUCH DAMAGE.                                                 #
+#                                                                             #
+###############################################################################
+*/
 
 #include "./sbml_test1.h"
 
@@ -15,8 +81,6 @@ int ingest_glu_cell_idx;
 #include <sstream>
 // #include <vector>
 #include <string>
-
-// extern Cell_Type_Parameters cell_type_param; 
 
 void setup_microenvironment( void )
 {
@@ -106,15 +170,6 @@ void create_cell_types( void )
 	   This is a good place to set custom functions. 
 	*/ 
 	
-	// if( parameters.bools("predators_eat_prey") == true )
-	// { get_cell_definition("predator").functions.custom_cell_rule = predator_hunting_function; }
-
-	// if( parameters.bools("predators_cycle_if_big") == true )
-	// { get_cell_definition("predator").functions.update_phenotype = predator_cycling_function; }
-
-	// if( parameters.bools("prey_quorom_effect") == true )
-	// { get_cell_definition("prey").functions.update_phenotype = prey_cycling_function; }
-		
 	/*
 	   This builds the map of cell definitions and summarizes the setup. 
 	*/
@@ -134,85 +189,71 @@ void setup_tissue( void )
 #endif
 
 	Cell* pC;
-	// float xval = -600.0;
-	// float yval = 1000.0;
 	float xval = -100.0;
 
 	std::cout << "\n---------- setup_tissue() -----------\n";
 
-	// create just 3 cells, equally spaced in y; they'll migrate left-to-right
-	// for (int idx=0; idx<3; idx++) {
-
-		std::cerr << "------------->>>>>  celltype1\n";
-		pC = create_cell( get_cell_definition("celltype1") ); 
-		int yval = 100.;
-		pC->assign_position( xval, yval, 0.0 ); 
-
-		// pC->set_total_volume( pC->get_total_volume() * 3.0); 
-
-		// Model_t *mm = SBMLDocument_getModel(sbml_doc);
-		// std::cout << "mm =" << mm << std::endl;
-		// pC->phenotype.molecular.molecular_model = mm;  // assign the intracellular model to each cell
+	std::cerr << "------------->>>>>  celltype1\n";
+	pC = create_cell( get_cell_definition("celltype1") ); 
+	int yval = 100.;
+	pC->assign_position( xval, yval, 0.0 ); 
 
 #ifdef LIBROADRUNNER
-		std::cerr << "------------->>>>>  Creating rrHandle, loadSBML file\n\n";
-		// std::cerr << "------------->>>>>  SBML file = " << cell_type_param.sbml_filename << std::endl;
-		std::cerr << "------------->>>>>  SBML file = " << get_cell_definition("celltype1").sbml_filename << std::endl;
-		rrc::RRHandle rrHandle = createRRInstance();
-		// cell_defaults.phenotype.motility.persistence_time = parameters.doubles("persistence_time"); 
-		// if (!rrc::loadSBML (rrHandle, "../Toy_Model_for_PhysiCell_1.xml")) {
-		if (!rrc::loadSBML (rrHandle, get_cell_definition("celltype1").sbml_filename.c_str())) {
-			std::cerr << "------------->>>>>  Error while loading SBML file  <-------------\n\n";
-		// 	printf ("Error message: %s\n", getLastError());
-		// 	getchar ();
-		// 	exit (0);
-		}
-		pC->phenotype.molecular.model_rr = rrHandle;  // assign the intracellular model to each cell
-		int r = rrc::getNumberOfReactions(rrHandle);
-		int m = rrc::getNumberOfFloatingSpecies(rrHandle);
-		int b = rrc::getNumberOfBoundarySpecies(rrHandle);
-		int p = rrc::getNumberOfGlobalParameters(rrHandle);
-		int c = rrc::getNumberOfCompartments(rrHandle);
+	std::cerr << "------------->>>>>  Creating rrHandle, loadSBML file\n\n";
+	// std::cerr << "------------->>>>>  SBML file = " << cell_type_param.sbml_filename << std::endl;
+	std::cerr << "------------->>>>>  SBML file = " << get_cell_definition("celltype1").sbml_filename << std::endl;
+	rrc::RRHandle rrHandle = createRRInstance();
+	// cell_defaults.phenotype.motility.persistence_time = parameters.doubles("persistence_time"); 
+	// if (!rrc::loadSBML (rrHandle, "../Toy_Model_for_PhysiCell_1.xml")) {
+	if (!rrc::loadSBML (rrHandle, get_cell_definition("celltype1").sbml_filename.c_str())) {
+		std::cerr << "------------->>>>>  Error while loading SBML file  <-------------\n\n";
+	// 	printf ("Error message: %s\n", getLastError());
+	// 	getchar ();
+	// 	exit (0);
+	}
+	pC->phenotype.molecular.model_rr = rrHandle;  // assign the intracellular model to each cell
+	int r = rrc::getNumberOfReactions(rrHandle);
+	int m = rrc::getNumberOfFloatingSpecies(rrHandle);
+	int b = rrc::getNumberOfBoundarySpecies(rrHandle);
+	int p = rrc::getNumberOfGlobalParameters(rrHandle);
+	int c = rrc::getNumberOfCompartments(rrHandle);
 
-		std::cerr << "Number of reactions = " << r << std::endl;
-		std::cerr << "Number of floating species = " << m << std::endl;  // 4
-		std::cerr << "Number of boundary species = " << b << std::endl;  // 0
-		std::cerr << "Number of compartments = " << c << std::endl;  // 1
+	std::cerr << "Number of reactions = " << r << std::endl;
+	std::cerr << "Number of floating species = " << m << std::endl;  // 4
+	std::cerr << "Number of boundary species = " << b << std::endl;  // 0
+	std::cerr << "Number of compartments = " << c << std::endl;  // 1
 
-		std::cerr << "Floating species names:\n";
-		std::cerr << "-----------------------\n";
-		std::cerr << stringArrayToString(rrc::getFloatingSpeciesIds(rrHandle)) <<"\n"<< std::endl;
+	std::cerr << "Floating species names:\n";
+	std::cerr << "-----------------------\n";
+	std::cerr << stringArrayToString(rrc::getFloatingSpeciesIds(rrHandle)) <<"\n"<< std::endl;
 
-		vptr = rrc::getFloatingSpeciesConcentrations(rrHandle);
-	    std::cerr << vptr->Count << std::endl;
-   		for (int kdx=0; kdx<vptr->Count; kdx++)
-      		std::cerr << kdx << ") " << vptr->Data[kdx] << std::endl;
+	vptr = rrc::getFloatingSpeciesConcentrations(rrHandle);
+	std::cerr << vptr->Count << std::endl;
+	for (int kdx=0; kdx<vptr->Count; kdx++)
+		std::cerr << kdx << ") " << vptr->Data[kdx] << std::endl;
 #endif
 
-
-		//-------------------------
-		std::cerr << "------------->>>>> celltype2\n";
-		pC = create_cell( get_cell_definition("celltype2") ); 
-		yval = -100.;
-		pC->assign_position( xval, yval, 0.0 ); 
+	//-------------------------
+	std::cerr << "------------->>>>> celltype2\n";
+	pC = create_cell( get_cell_definition("celltype2") ); 
+	yval = -100.;
+	pC->assign_position( xval, yval, 0.0 ); 
 
 #ifdef LIBROADRUNNER
-		std::cerr << "------------->>>>>  Creating rrHandle, loadSBML file\n\n";
-		std::cerr << "------------->>>>>  SBML file = " << get_cell_definition("celltype2").sbml_filename << std::endl;
-		rrHandle = createRRInstance();
-		// if (!rrc::loadSBML (rrHandle, "../Toy_Model_for_PhysiCell_2.xml")) {
-		if (!rrc::loadSBML (rrHandle, get_cell_definition("celltype2").sbml_filename.c_str())) {
-			std::cerr << "------------->>>>>  Error while loading SBML file  <-------------\n\n";
-		 	exit (0);
-		}
-		pC->phenotype.molecular.model_rr = rrHandle;  // assign the intracellular model to each cell
+	std::cerr << "------------->>>>>  Creating rrHandle, loadSBML file\n\n";
+	std::cerr << "------------->>>>>  SBML file = " << get_cell_definition("celltype2").sbml_filename << std::endl;
+	rrHandle = createRRInstance();
+	// if (!rrc::loadSBML (rrHandle, "../Toy_Model_for_PhysiCell_2.xml")) {
+	if (!rrc::loadSBML (rrHandle, get_cell_definition("celltype2").sbml_filename.c_str())) {
+		std::cerr << "------------->>>>>  Error while loading SBML file  <-------------\n\n";
+		exit (0);
+	}
+	pC->phenotype.molecular.model_rr = rrHandle;  // assign the intracellular model to each cell
 #endif
 
-	// }
 	return; 
 }
 
-// cell_defaults.functions.update_phenotype = energy_based_cell_phenotype; 
 void energy_based_cell_phenotype(Cell* pCell, Phenotype& phenotype , double dt)
 {
 	static int idx_glucose = 1;
@@ -319,11 +360,11 @@ std::vector<std::string> energy_coloring_function( Cell* pCell )
 	
 	return output; 
 }
-void celltype1_rule(Cell* pCell, Phenotype& phenotype , double dt)
-{
-	std::cout << "------ celltype1_rule:";
-}
-void celltype2_rule(Cell* pCell, Phenotype& phenotype , double dt)
-{
-	std::cout << "-- celltype2_rule:";
-}
+// void celltype1_rule(Cell* pCell, Phenotype& phenotype , double dt)
+// {
+// 	std::cout << "------ celltype1_rule:";
+// }
+// void celltype2_rule(Cell* pCell, Phenotype& phenotype , double dt)
+// {
+// 	std::cout << "-- celltype2_rule:";
+// }
