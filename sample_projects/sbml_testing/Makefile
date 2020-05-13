@@ -81,12 +81,12 @@ ALL_OBJECTS := $(PhysiCell_OBJECTS)  $(PhysiCell_custom_module_OBJECTS)
 
 # compile the project
 
-all: main_sbml_test1.cpp $(ALL_OBJECTS)
+all: main.cpp $(ALL_OBJECTS)
 	@echo Your OS= $(OSFLAG)
 	@echo LIBRR_CFLAGS= $(LIBRR_CFLAGS)
 	@echo LIBRR_LIBS= $(LIBRR_LIBS)
 	@echo 
-	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(PATH_TO_OMP) -lomp -o $(PROGRAM_NAME) $(ALL_OBJECTS) main_sbml_test1.cpp
+	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(PATH_TO_OMP) -lomp -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
 	@echo
 	@echo created $(PROGRAM_NAME)
 	@echo
