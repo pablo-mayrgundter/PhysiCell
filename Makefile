@@ -147,6 +147,15 @@ beta-testing:
 	cp ./sample_projects/beta_testing/Makefile .
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml 
 	cp ./sample_projects/beta_testing/config/* ./config/
+
+sbml-testing:
+	cp ./sample_projects/sbml_testing/custom_modules/* ./custom_modules/
+	touch main.cpp && cp main.cpp main-backup.cpp
+	cp ./sample_projects/sbml_testing/main-sbml.cpp ./main.cpp 
+	cp Makefile Makefile-backup
+	cp ./sample_projects/sbml_testing/Makefile .
+	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml 
+	cp ./sample_projects/sbml_testing/config/* ./config/
 	
 # early examples for convergence testing 
 
