@@ -279,6 +279,8 @@
 				</secretion>
 				<molecular type="sbml">
 					<filename>./config/Toy_SBML_Model_1.xml</filename>
+					<!-- species metaid="COPASI2" id="Energy" name="Energy" compartment="Cell" initialConcentration="5" ... -->
+					<map1 custom_data="energy" sbml_species="Energy"></map1>
 				</molecular>
 			</phenotype>
 			<custom_data>
@@ -316,6 +318,7 @@
 				</secretion>
 				<molecular type="sbml">
 					<filename>./config/Toy_SBML_Model_2.xml</filename>
+					<map1 custom_data="energy" sbml_species="Energy"></map1>
 				</molecular>
 			</phenotype>
 			<custom_data>
