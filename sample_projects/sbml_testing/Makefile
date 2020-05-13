@@ -10,14 +10,14 @@ ifdef PHYSICELL_CPP
 endif
 
 # override with clang++ due to libRoadrunner macOS version relying on it
-CC := clang++
+#CC := clang++
 
 ARCH := native # best auto-tuning
 
 # For debugging with gdb just add: -g3 -ggdb -O3
 # -DCLP_BUILD is an additional flags to link againt clp
 
-CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -std=c++11 -U LIBROADRUNNER 
+CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 #CFLAGS := -march=$(ARCH) -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -std=c++11 -U LIBROADRUNNER 
 
 PATH_TO_OMP := -L/usr/local/opt/libomp/lib
@@ -39,6 +39,7 @@ else
 		OSFLAG += -D LINUX
 	endif
 	ifeq ($(UNAME_S),Darwin)
+		CC := clang++
 		OSFLAG += -D OSX
 #		LIBRR_DIR := /Users/heiland/libroadrunner/roadrunner-osx-10.9-cp36m
 		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
