@@ -1408,6 +1408,18 @@ Cell_Definition* initialize_cell_definition_from_pugixml( pugi::xml_node cd_node
 	pCD->phenotype.secretion.sync_to_microenvironment( (pCD->pMicroenvironment) ); 
 	pCD->phenotype.molecular.sync_to_microenvironment( (pCD->pMicroenvironment) );
 	
+	//------ SBML model
+	// pugi::xml_node intracellular_model_node = cd_node.child( "intracellular_model" );
+	// if( intracellular_model_node )
+	// {
+	// 	std::string type = intracellular_model_node.attribute( "type" ).value(); 
+	// 	std::cout << __FUNCTION__ << "----------: intracellular_model=  " << type << std::endl;
+
+	// 	std::string sbml_file = xml_get_string_value( intracellular_model_node, "filename" ) ;
+	// 	std::cout << "sbml_file= " << sbml_file << std::endl;
+
+	// 	pCD->sbml_filename = sbml_file;
+	// }
 	
 	// set the reference phenotype 
 	pCD->parameters.pReference_live_phenotype = &(pCD->phenotype); 
@@ -1891,6 +1903,22 @@ Cell_Definition* initialize_cell_definition_from_pugixml( pugi::xml_node cd_node
 			node_sec = node_sec.next_sibling( "substrate" ); 
 		}
 	}	
+
+	// molecular 
+	
+	node = cd_node.child( "phenotype" );
+	node = node.child( "molecular" ); 
+	if( node )
+	{
+		// Secretion* pS = &(pCD->phenotype.secretion);
+		std::string type = node.attribute( "type" ).value(); 
+		std::cout << __FUNCTION__ << "----------: intracellular_model=  " << type << std::endl;
+
+		std::string sbml_file = xml_get_string_value( node, "filename" ) ;
+		std::cout << "sbml_file= " << sbml_file << std::endl;
+
+		pCD->sbml_filename = sbml_file;
+	}
 
 	
 	// set up custom data 
