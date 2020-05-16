@@ -44,7 +44,8 @@ else
 		LIBRR_DIR := $(HOME)/libroadrunner/libroadrunner
 		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
 		LIBRR_LIBS := ${LIBRR_DIR}/lib
-		CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
+		# CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
+		CFLAGS := -march=$(ARCH) -fomit-frame-pointer -m64 -std=c++11 -D LIBROADRUNNER 
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		CC := clang++
@@ -58,7 +59,8 @@ else
 		OSFLAG += -D AMD64
 		LIBRR_DIR := $(HOME)/libroadrunner/libroadrunner
 		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
-		CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
+		# CFLAGS := -march=$(ARCH) -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
+		CFLAGS := -march=$(ARCH) -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 	endif
 		ifneq ($(filter %86,$(UNAME_P)),)
 	OSFLAG += -D IA32
@@ -98,7 +100,8 @@ all: main.cpp $(ALL_OBJECTS)
 	@echo LIBRR_LIBS= $(LIBRR_LIBS)
 	@echo 
 #	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(PATH_TO_OMP) -lomp -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
-	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
+#	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
+	$(COMPILE_COMMAND) $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp -L$(LIBRR_LIBS) -lroadrunner_c_api
 	@echo
 	@echo created $(PROGRAM_NAME)
 	@echo
