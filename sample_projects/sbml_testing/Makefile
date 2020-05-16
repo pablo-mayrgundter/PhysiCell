@@ -1,5 +1,5 @@
 VERSION := $(shell grep . VERSION.txt | cut -f1 -d:)
-PROGRAM_NAME:= sbmltest1
+PROGRAM_NAME:= sbml-test
 
 CC := g++
 
@@ -49,7 +49,7 @@ else
 	ifeq ($(UNAME_S),Darwin)
 		CC := clang++
 		OSFLAG += -D OSX
-#		LIBRR_DIR := /Users/heiland/libroadrunner/roadrunner-osx-10.9-cp36m
+		LIBRR_DIR := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m
 		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
 		LIBRR_LIBS := ${LIBRR_DIR}/lib
 	endif
@@ -82,7 +82,7 @@ PhysiCell_module_OBJECTS := PhysiCell_SVG.o PhysiCell_pathology.o PhysiCell_Mult
 PhysiCell_pugixml.o PhysiCell_settings.o
 
 # put your custom objects here (they should be in the custom_modules directory)
-PhysiCell_custom_module_OBJECTS := sbml_test1.o
+PhysiCell_custom_module_OBJECTS := sbml_test.o
 
 pugixml_OBJECTS := pugixml.o
 
@@ -183,8 +183,8 @@ PhysiCell_settings.o: ./modules/PhysiCell_settings.cpp
 	$(COMPILE_COMMAND) -c ./modules/PhysiCell_settings.cpp
 
 # PhysiCell core components
-sbml_test1.o: ./custom_modules/sbml_test1.cpp ./intracellular/PhysiCell_intracellular.h
-	$(COMPILE_COMMAND) -c ./custom_modules/sbml_test1.cpp
+sbml_test.o: ./custom_modules/sbml_test.cpp ./intracellular/PhysiCell_intracellular.h
+	$(COMPILE_COMMAND) -c ./custom_modules/sbml_test.cpp
 
 # cleanup
 
