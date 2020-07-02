@@ -1534,9 +1534,11 @@ Cell_Definition* initialize_cell_definition_from_pugixml( pugi::xml_node cd_node
 		{ node = node.child( "phase_transition_rates" ); }
 		if( node.child( "transition_rates" ) )
 		{
-			node = node.child( "transition_rates" ); 
-			std::cout << "Warning: " << node.name() << " is deprecated. Use cycle.phase_transition_rates." 
-				<< std::endl; 
+			node = node.child( "transition_rates" );
+			std::cout << "Warning: " << node.name()
+                                  << " is deprecated. Use cycle.phase_transition_rates. Found in: ";
+                        node.print(std::cout, "", pugi::format_raw);
+                        std::cout << std::endl;
 		}
 		if( node )
 		{
@@ -1633,9 +1635,12 @@ Cell_Definition* initialize_cell_definition_from_pugixml( pugi::xml_node cd_node
 			}
 			if( node.child( "rate" ) )
 			{
-				node = node.child( "rate" ); 
-				std::cout << "Warning: " << node.name() << " is deprecated. Use death.model.death_rate." 
-					<< std::endl; 
+				node = node.child( "rate" );
+				std::cout << "Warning: " << node.name()
+                                          << " is deprecated. Use death.model.death_rate.  "
+                                          << "Found at: " ;
+                                node.print(std::cout, "", pugi::format_raw);
+                                std::cout << std::endl;
 			}
 			double rate = xml_get_my_double_value(node);
 			node = node.parent();
@@ -1740,9 +1745,10 @@ Cell_Definition* initialize_cell_definition_from_pugixml( pugi::xml_node cd_node
 			if( node.child( "transition_rates" ) )
 			{
 				node_death_transitions = node.child("transition_rates");
-				std::cout << "Warning: " << node_death_transitions.name() 
-					<< " is deprecated. Use death.model.phase_transition_rates." 
-					<< std::endl; 				
+				std::cout << "Warning: " << node_death_transitions.name()
+                                          << " is deprecated. Use death.model.phase_transition_rates. Found at: ";
+                                node.print(std::cout, "", pugi::format_raw);
+                                std::cout << std::endl;
 			}
 			
 			
