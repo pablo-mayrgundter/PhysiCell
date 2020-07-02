@@ -1,6 +1,10 @@
 VERSION := $(shell grep . VERSION.txt | cut -f1 -d:)
 PROGRAM_NAME:= sbml-test
 
+USER_HOME := $(HOME)
+BREW_HOME := $(USER_HOME)/brew
+LIBRR_HOME := $(HOME)/librr
+
 CC := g++
 
 # Check for environment definitions of compiler
@@ -21,19 +25,20 @@ CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -
 #CFLAGS := -march=$(ARCH) -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -std=c++11 -U LIBROADRUNNER 
 
 # OSX
-PATH_TO_OMP := -L/usr/local/opt/libomp/lib
+OMP_INCLUDE := -I $(BREW_HOME)/include
+LIBOMP_FLAGS := $(OMP_INCLUDE)
+PATH_TO_OMP := -L/opt/local/lib/libomp
 OMP_LIB := $(PATH_TO_OMP) -lomp
 
-#LIBRR_DIR := /Users/heiland/libroadrunner/roadrunner-osx-10.9-cp36m
-#LIBRR_LIBS := /home/heiland/libroadrunner/cpplibroadrunner-1.3.0-linux_x86_64/lib
+LIBRR_DIR := $(LIBRR_HOME)/install/roadrunner
+LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
+LIBRR_LIBS := ${LIBRR_DIR}/lib
 
 OSFLAG 	:=
 ifeq ($(OS),Windows_NT)
 	OSFLAG += -D WIN32
-	OMP_LIB := 
-	LIBRR_DIR := C:\Users\heiland\libroadrunner\roadrunner-win64-vs14-cp35m
-	LIBRR_LIBS := C:\Users\heiland\libroadrunner\roadrunner-win64-vs14-cp35m/bin
-	LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
+	LIBRR_DIR := $(LIBRR_HOME)\roadrunner-win64-vs14-cp35m
+	LIBRR_LIBS := $(LIBRR_HOME)\libroadrunner\roadrunner-win64-vs14-cp35m/bin
 	CFLAGS := -march=$(ARCH) -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
@@ -45,25 +50,16 @@ else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSFLAG += -D LINUX
-		OMP_LIB :=
-		LIBRR_DIR := $(HOME)/libroadrunner/libroadrunner
-		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
-		LIBRR_LIBS := ${LIBRR_DIR}/lib
 		# CFLAGS := -march=$(ARCH) -g  -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 		CFLAGS := -march=$(ARCH) -fomit-frame-pointer -m64 -std=c++11 -D LIBROADRUNNER 
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		CC := clang++
 		OSFLAG += -D OSX
-		LIBRR_DIR := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m
-		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
-		LIBRR_LIBS := ${LIBRR_DIR}/lib
 	endif
 		UNAME_P := $(shell uname -p)
 	ifeq ($(UNAME_P),x86_64)
 		OSFLAG += -D AMD64
-		LIBRR_DIR := $(HOME)/libroadrunner/libroadrunner
-		LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
 		# CFLAGS := -march=$(ARCH) -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 		CFLAGS := -march=$(ARCH) -fomit-frame-pointer -fopenmp -m64 -std=c++11 -D LIBROADRUNNER 
 	endif
@@ -78,7 +74,7 @@ endif
 #all:
 #	@echo $(OSFLAG)
 
-COMPILE_COMMAND := $(CC) $(CFLAGS) $(LIBRR_CFLAGS) 
+COMPILE_COMMAND := $(CC) $(CFLAGS) $(LIBOMP_FLAGS) $(LIBRR_CFLAGS)
 
 BioFVM_OBJECTS := BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFVM_matlab.o \
 BioFVM_utilities.o BioFVM_basic_agent.o BioFVM_MultiCellDS.o BioFVM_agent_container.o
@@ -103,9 +99,7 @@ all: main.cpp $(ALL_OBJECTS)
 	@echo Your OS= $(OSFLAG)
 	@echo LIBRR_CFLAGS= $(LIBRR_CFLAGS)
 	@echo LIBRR_LIBS= $(LIBRR_LIBS)
-	@echo 
-#	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(PATH_TO_OMP) -lomp -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
-#	$(COMPILE_COMMAND) -L$(LIBRR_LIBS) -lroadrunner_c_api $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp
+	@echo
 	$(COMPILE_COMMAND) $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp -L$(LIBRR_LIBS) -lroadrunner_c_api
 	@echo
 	@echo created $(PROGRAM_NAME)

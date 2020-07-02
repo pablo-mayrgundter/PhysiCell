@@ -30,9 +30,17 @@ ARCH := native # best auto-tuning
 # ARCH := nocona #64-bit pentium 4 or later 
 
 # CFLAGS := -march=$(ARCH) -Ofast -s -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11
-CFLAGS := -march=$(ARCH) -O3 -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11
+CFLAGS := -march=$(ARCH) -O3 -fomit-frame-pointer -Xpreprocessor -fopenmp -m64 -std=c++11
 
-COMPILE_COMMAND := $(CC) $(CFLAGS) 
+# libomp
+OMP_INCLUDE := -I /Users/pablo/brew/include
+LIBOMP_FLAGS := $(OMP_INCLUDE)
+PATH_TO_OMP := -L/opt/local/lib/libomp
+OMP_LIB := $(PATH_TO_OMP) -lomp
+
+LINKER_FLAGS := $(OMP_LIB)
+
+COMPILE_COMMAND := $(CC) $(CFLAGS) $(LIBOMP_FLAGS)
 
 BioFVM_OBJECTS := BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFVM_matlab.o \
 BioFVM_utilities.o BioFVM_basic_agent.o BioFVM_MultiCellDS.o BioFVM_agent_container.o 
@@ -54,7 +62,7 @@ ALL_OBJECTS := $(PhysiCell_OBJECTS) $(PhysiCell_custom_module_OBJECTS)
 # compile the project  
 
 all: main.cpp $(ALL_OBJECTS)
-	$(COMPILE_COMMAND) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp 
+	$(COMPILE_COMMAND) $(LINKER_FLAGS) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp 
 
 # PhysiCell core components	
 
